@@ -1,0 +1,16 @@
+version: "2"
+services:
+  pikapi_and_dasi_gashapon_machine_server:
+    #image: "pikapi_and_dasi_gashapon_machine:latest" #這個會嘗試去docker hub取得image檔，取得失敗則會報錯，不會去抓local image檔
+    build: . #直接使用Dockerfile build專案來建立要使用的image檔，不可與image共存
+    container_name: pikapi_and_dasi_gashapon_machine
+    ports:
+      - "8080:80"
+      - "4434:443"
+    volumes:
+      - "/var/log/pikapi_and_dasi_gashapon_machine/:/app/logs"
+      - "pdgm-mysql-data:/var/lib/mysql"
+    restart: always
+volumes:
+  pdgm-mysql-data:
+    driver: local
