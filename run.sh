@@ -1,6 +1,6 @@
 #!/bin/bash
 
-service mysql start
+service mariadb start
 mysql < mysql_init.sql
 mkdir /app/logs/nginx/
 touch /app/logs/nginx/access.log
