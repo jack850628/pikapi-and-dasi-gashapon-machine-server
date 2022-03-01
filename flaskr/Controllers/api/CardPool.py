@@ -63,6 +63,7 @@ def putPool():
     try:
         name = request.form['name'] if 'name' in request.form else ''
         describe = request.form['describe'] if 'describe' in request.form else ''
+        image = request.form['image'] if 'image' in request.form else ''
         isPublic = request.form['isPublic'] == 'true' if 'isPublic' in request.form else False
 
         token = request.headers['user-token'] if 'user-token' in request.headers else None
@@ -71,7 +72,7 @@ def putPool():
             raise JException('缺少 user-token')
 
         userId = jwt.decode(token, verify=False)['sub']
-        result = CardPool.putPool(database, name, describe, isPublic, userId)
+        result = CardPool.putPool(database, name, describe, image, isPublic, userId)
         database.session.commit()
         return ResponseTemplate.success(result.id)
     except (
@@ -97,6 +98,7 @@ def updatePool(pool_id):
     try:
         name = request.form['name'] if 'name' in request.form else ''
         describe = request.form['describe'] if 'describe' in request.form else ''
+        image = request.form['image'] if 'image' in request.form else ''
         isPublic = request.form['isPublic'] == 'true' if 'isPublic' in request.form else False
 
         token = request.headers['user-token'] if 'user-token' in request.headers else None
@@ -105,7 +107,7 @@ def updatePool(pool_id):
             raise JException('缺少 user-token')
 
         userId = jwt.decode(token, verify=False)['sub']
-        CardPool.updatePool(database, pool_id, name, describe, isPublic, userId)
+        CardPool.updatePool(database, pool_id, name, describe, image, isPublic, userId)
         database.session.commit()
         return ResponseTemplate.success()
     except (

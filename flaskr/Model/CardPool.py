@@ -33,10 +33,11 @@ def getPool(database: Database, poolId: int) -> dict:
 
     return cardPoolEntity._asdict()
 
-def putPool(database: Database, name: str, describe: str, isPublic: bool, userId: str) -> CardPoolEntity:
+def putPool(database: Database, name: str, describe: str, image: str, isPublic: bool, userId: str) -> CardPoolEntity:
     cardPoolEntity = CardPoolEntity(
         name = name,
         describe = describe,
+        image = image,
         userId = userId,
         isPublic = isPublic
     )
@@ -44,7 +45,7 @@ def putPool(database: Database, name: str, describe: str, isPublic: bool, userId
 
     return cardPoolEntity
 
-def updatePool(database: Database, poolId: int, name: str, describe: str, isPublic: bool, userId: str):
+def updatePool(database: Database, poolId: int, name: str, describe: str, image: str, isPublic: bool, userId: str):
     cardPoolEntity = database.session.query(
         CardPoolEntity
     ).filter(
@@ -57,6 +58,7 @@ def updatePool(database: Database, poolId: int, name: str, describe: str, isPubl
 
     cardPoolEntity.name = name
     cardPoolEntity.describe = describe
+    cardPoolEntity.image = image
     cardPoolEntity.isPublic = isPublic
 
 def deletePool(database: Database, poolId: int, userId: str) -> int:

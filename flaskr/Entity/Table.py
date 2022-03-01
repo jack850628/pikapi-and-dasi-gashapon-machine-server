@@ -18,6 +18,7 @@ class CardPoolEntity(base):
     id = Column('id', Integer, primary_key = True, autoincrement = True)
     name = Column('name', VARCHAR(20), nullable = True)
     describe = Column('describe', Text, nullable = False)
+    image = Column('image', Text, nullable = False)
     userId = Column('userId', Text, nullable = False)
     isPublic = Column('isPublic', Boolean, nullable = False, default = False)
 
