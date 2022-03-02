@@ -10,6 +10,7 @@ def getAllPools(database: Database) -> list:
         CardPoolEntity.id,
         CardPoolEntity.name,
         CardPoolEntity.describe,
+        CardPoolEntity.image,
         CardPoolEntity.userId,
         CardPoolEntity.isPublic
     ).all()
@@ -22,6 +23,7 @@ def getPool(database: Database, poolId: int) -> dict:
     cardPoolEntity = database.session.query(
         CardPoolEntity.name,
         CardPoolEntity.describe,
+        CardPoolEntity.image,
         CardPoolEntity.userId,
         CardPoolEntity.isPublic
     ).filter(
