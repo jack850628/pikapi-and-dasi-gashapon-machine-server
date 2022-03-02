@@ -17,6 +17,13 @@ def create_app():
             'origins': [
                 'http://localhost:8080',
                 'https://jack850628.github.io/'
+            ],
+            'methods': [
+                'GET',
+                'POST',
+                'PUT',
+                'DELETE',
+                'OPTIONS',
             ]
         }
     }) 
