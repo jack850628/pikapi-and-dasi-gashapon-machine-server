@@ -1,6 +1,7 @@
 # import sys
 # sys.path.append("./flaskr")
 
+import os
 from flask import Flask
 from flask_cors import CORS
 from flaskr.Controllers.api import CardPool, Card
@@ -10,7 +11,7 @@ def create_app():
     app = Flask(__name__)
     app.debug = Config.DEBUG
     app.config['TESTING'] = Config.TESTING
-    app.config['SECRET_KEY'] = Config.secretKey
+    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
     
     CORS(app, resources={
         r"/api/*": {
