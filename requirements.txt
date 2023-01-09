@@ -8,4 +8,5 @@ mysqlclient
 python-dateutil
 pycrypto
 google-auth
+requests
 flask_cors
