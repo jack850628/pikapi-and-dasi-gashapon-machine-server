@@ -6,7 +6,7 @@ import flaskr.Entity.GlobalDataBase as GlobalDataBase
 from flaskr.Config import Config
 from flask import Blueprint, Response, request
 from flaskr.Model.JException import *
-from google.auth import jwt
+from flaskr.Utility.Auth import check_identity
 
 cardPoolAPI = Blueprint('cardPoolAPI', __name__)
 
@@ -58,7 +58,8 @@ def getPool(pool_id):
         database.close()
 
 @cardPoolAPI.route('/create', methods=['PUT'])
-def putPool():
+@check_identity
+def putPool(userInfo):
     database = GlobalDataBase.database(Config.databaseUser)
     try:
         name = request.form['name'] if 'name' in request.form else ''
@@ -66,12 +67,7 @@ def putPool():
         image = request.form['image'] if 'image' in request.form else ''
         isPublic = request.form['isPublic'] == 'true' if 'isPublic' in request.form else False
 
-        token = request.headers['user-token'] if 'user-token' in request.headers else None
-
-        if token == None:
-            raise JException('缺少 user-token')
-
-        userId = jwt.decode(token, verify=False)['sub']
+        userId = userInfo['sub']
         result = CardPool.putPool(database, name, describe, image, isPublic, userId)
         database.session.commit()
         return ResponseTemplate.success(result.id)
@@ -93,7 +89,8 @@ def putPool():
         database.close()
 
 @cardPoolAPI.route('/<pool_id>', methods=['POST'])
-def updatePool(pool_id):
+@check_identity
+def updatePool(pool_id, userInfo):
     database = GlobalDataBase.database(Config.databaseUser)
     try:
         name = request.form['name'] if 'name' in request.form else ''
@@ -101,12 +98,7 @@ def updatePool(pool_id):
         image = request.form['image'] if 'image' in request.form else ''
         isPublic = request.form['isPublic'] == 'true' if 'isPublic' in request.form else False
 
-        token = request.headers['user-token'] if 'user-token' in request.headers else None
-
-        if token == None:
-            raise JException('缺少 user-token')
-
-        userId = jwt.decode(token, verify=False)['sub']
+        userId = userInfo['sub']
         CardPool.updatePool(database, pool_id, name, describe, image, isPublic, userId)
         database.session.commit()
         return ResponseTemplate.success()
@@ -128,7 +120,8 @@ def updatePool(pool_id):
         database.close()
 
 @cardPoolAPI.route('/<pool_id>', methods=['DELETE'])
-def deletePool(pool_id):
+@check_identity
+def deletePool(pool_id, userInfo):
     database = GlobalDataBase.database(Config.databaseUser)
     try:
         token = request.headers['user-token'] if 'user-token' in request.headers else None
@@ -136,7 +129,7 @@ def deletePool(pool_id):
         if token == None:
             raise JException('缺少 user-token')
 
-        userId = jwt.decode(token, verify=False)['sub']
+        userId = userInfo['sub']
         CardPool.deletePool(database, pool_id, userId)
         database.session.commit()
         return ResponseTemplate.success()
