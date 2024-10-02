@@ -7,8 +7,6 @@ class Config:
     DEBUG = False
     TESTING = False
 
-    secretKey = 'xssCIE8lNz4Q1L6DYTd4bDNhEeKcMOV0yBF2uuWtu0s='
-
     database = '/PikapiAndDasiGashaponMachine'
     databaseUser = '%s:%s@localhost' % (os.environ.get('DATABASE_USER_NAME'), os.environ.get('DATABASE_USER_PASSWORD'))
 
